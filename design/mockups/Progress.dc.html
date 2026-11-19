@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Progress</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0E1013}
+a{color:#C8F05A}a:hover{color:#E2FF8F}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0E1013; color: #F2F4F7; font-family: Inter, system-ui, sans-serif; box-sizing: border-box">
+  <div style="height: 760px; overflow-y: auto; padding: 24px 20px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; letter-spacing: -0.02em">Progress</h1>
+      <div role="group" aria-label="Time range" style="display: flex; padding: 3px; border-radius: 12px; background: #171A1F; border: 1px solid #23272E">
+        <sc-for list="{{ranges}}" as="r" hint-placeholder-count="3">
+          <button onClick="{{r.pick}}" aria-pressed="{{r.on}}" style="{{r.style}}">{{r.label}}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <button style="display: flex; align-items: center; justify-content: space-between; height: 48px; padding: 0 14px; border-radius: 14px; background: #171A1F; border: 1px solid #2A2F37; color: #F2F4F7; font: inherit; font-size: 15px; font-weight: 500; cursor: pointer">
+      <span style="display: flex; align-items: center; gap: 10px"><span style="width: 8px; height: 8px; border-radius: 4px; background: #FF9A4D"></span>Flat DB Bench Press</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9AA3AF" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+    </button>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+      <div style="background: #171A1F; border: 1px solid #23272E; border-radius: 14px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #9AA3AF">Est. 1RM</span><span style="font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600">93 lb</span><span style="font-size: 12px; color: #C8F05A">+26% · 12 wk</span></div>
+      <div style="background: #171A1F; border: 1px solid #23272E; border-radius: 14px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #9AA3AF">Best set</span><span style="font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600">70 × 10</span><span style="font-size: 12px; color: #9AA3AF">Nov 14</span></div>
+      <div style="background: #171A1F; border: 1px solid #23272E; border-radius: 14px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #9AA3AF">Sessions</span><span style="font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600">22</span><span style="font-size: 12px; color: #9AA3AF">this block</span></div>
+    </div>
+
+    <figure style="margin: 0; background: #171A1F; border: 1px solid #23272E; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+      <figcaption style="display: flex; justify-content: space-between; align-items: baseline">
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600">Estimated 1-rep max</span>
+        <span style="font-size: 12px; color: #9AA3AF">lb · weekly best</span>
+      </figcaption>
+      <svg viewBox="0 0 326 160" width="100%" role="img" aria-label="Estimated one-rep max rose from 74 pounds to 93 pounds over 12 weeks" style="display: block">
+        <g stroke="#262B33" stroke-width="1">
+          <line x1="8" y1="114" x2="318" y2="114"></line>
+          <line x1="8" y1="88" x2="318" y2="88"></line>
+          <line x1="8" y1="62" x2="318" y2="62"></line>
+          <line x1="8" y1="36" x2="318" y2="36"></line>
+        </g>
+        <g fill="#9AA3AF" font-size="10" font-family="Inter, sans-serif">
+          <text x="8" y="110">75</text>
+          <text x="8" y="84">80</text>
+          <text x="8" y="58">85</text>
+          <text x="8" y="32">90</text>
+          <text x="8" y="156">Aug 31</text>
+          <text x="318" y="156" text-anchor="end">Nov 16</text>
+        </g>
+        <path d="M8 119.2 L36.2 108.8 L64.4 103.6 L92.5 88 L120.7 88 L148.9 72.4 L177.1 62 L205.3 67.2 L233.5 51.6 L261.6 41.2 L289.8 30.8 L318 20.4 L318 140 L8 140 Z" fill="#FF9A4D" opacity="0.12"></path>
+        <path d="M8 119.2 L36.2 108.8 L64.4 103.6 L92.5 88 L120.7 88 L148.9 72.4 L177.1 62 L205.3 67.2 L233.5 51.6 L261.6 41.2 L289.8 30.8 L318 20.4" fill="none" stroke="#FF9A4D" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></path>
+        <circle cx="318" cy="20.4" r="5" fill="#0E1013" stroke="#FF9A4D" stroke-width="2.5"></circle>
+        <text x="306" y="16" text-anchor="end" fill="#F2F4F7" font-size="11" font-weight="600" font-family="Inter, sans-serif">93</text>
+      </svg>
+    </figure>
+
+    <figure style="margin: 0; background: #171A1F; border: 1px solid #23272E; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+      <figcaption style="display: flex; justify-content: space-between; align-items: baseline">
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600">Weekly volume</span>
+        <span style="font-size: 12px; color: #9AA3AF">all lifts · k lb</span>
+      </figcaption>
+      <svg viewBox="0 0 326 140" width="100%" role="img" aria-label="Weekly volume over 8 weeks, rising from 18.2 to 24.8 thousand pounds" style="display: block">
+        <line x1="0" y1="120" x2="326" y2="120" stroke="#2A2F37" stroke-width="1"></line>
+        <g fill="#3A404A">
+          <rect x="7" y="39.9" width="26" height="80.1" rx="4"></rect>
+          <rect x="47.75" y="34.2" width="26" height="85.8" rx="4"></rect>
+          <rect x="88.5" y="41.7" width="26" height="78.3" rx="4"></rect>
+          <rect x="129.25" y="27.6" width="26" height="92.4" rx="4"></rect>
+          <rect x="170" y="21.4" width="26" height="98.6" rx="4"></rect>
+          <rect x="210.75" y="23.6" width="26" height="96.4" rx="4"></rect>
+          <rect x="251.5" y="16.2" width="26" height="103.8" rx="4"></rect>
+        </g>
+        <rect x="292.25" y="10.9" width="26" height="109.1" rx="4" fill="#C8F05A"></rect>
+        <text x="305.25" y="7" text-anchor="middle" fill="#F2F4F7" font-size="10" font-weight="600" font-family="Inter, sans-serif">24.8</text>
+        <g fill="#9AA3AF" font-size="10" font-family="Inter, sans-serif" text-anchor="middle">
+          <text x="20" y="134">W5</text><text x="60.75" y="134">W6</text><text x="101.5" y="134">W7</text><text x="142.25" y="134">W8</text>
+          <text x="183" y="134">W9</text><text x="223.75" y="134">W10</text><text x="264.5" y="134">W11</text><text x="305.25" y="134">W12</text>
+        </g>
+      </svg>
+    </figure>
+
+    <section style="background: #171A1F; border: 1px solid #23272E; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600">Sets by day · last 4 weeks</h2>
+      <div style="display: grid; grid-template-columns: 44px minmax(0, 1fr) 28px; gap: 10px; align-items: center; font-size: 13px">
+        <span style="color: #FF9A4D; font-weight: 600">Push</span><span style="height: 10px; border-radius: 5px; background: #2B2118"><span style="display: block; width: 100%; height: 10px; border-radius: 5px; background: #FF9A4D"></span></span><span style="text-align: right">58</span>
+        <span style="color: #5AB0FF; font-weight: 600">Pull</span><span style="height: 10px; border-radius: 5px; background: #16232F"><span style="display: block; width: 93%; height: 10px; border-radius: 5px; background: #5AB0FF"></span></span><span style="text-align: right">54</span>
+        <span style="color: #B79CFF; font-weight: 600">Legs</span><span style="height: 10px; border-radius: 5px; background: #221D2E"><span style="display: block; width: 71%; height: 10px; border-radius: 5px; background: #B79CFF"></span></span><span style="text-align: right">41</span>
+      </div>
+      <span style="font-size: 12px; color: #9AA3AF">Legs are trailing — 2 leg days were skipped this block.</span>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 8px">
+      <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600">Recent PRs</h2>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: #171A1F; border: 1px solid #23272E"><span style="width: 8px; height: 8px; border-radius: 4px; background: #5AB0FF"></span><span style="flex: 1; font-size: 14px">One-Arm DB Row</span><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600">75 × 10</span><span style="font-size: 12px; color: #9AA3AF; width: 44px; text-align: right">Nov 18</span></div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: #171A1F; border: 1px solid #23272E"><span style="width: 8px; height: 8px; border-radius: 4px; background: #FF9A4D"></span><span style="flex: 1; font-size: 14px">Flat DB Bench Press</span><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600">70 × 10</span><span style="font-size: 12px; color: #9AA3AF; width: 44px; text-align: right">Nov 14</span></div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: #171A1F; border: 1px solid #23272E"><span style="width: 8px; height: 8px; border-radius: 4px; background: #B79CFF"></span><span style="flex: 1; font-size: 14px">Goblet Squat</span><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600">80 × 12</span><span style="font-size: 12px; color: #9AA3AF; width: 44px; text-align: right">Nov 11</span></div>
+    </section>
+  </div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; background: #12151A; border-top: 1px solid #23272E; display: flex; justify-content: space-around; align-items: flex-start; padding-top: 8px; box-sizing: border-box">
+    <a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 72px; min-height: 44px; text-decoration: none; color: #9AA3AF; font-size: 11px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>Today</a>
+    <a href="Library.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 72px; min-height: 44px; text-decoration: none; color: #9AA3AF; font-size: 11px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"></path></svg>Library</a>
+    <a href="Progress.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 72px; min-height: 44px; text-decoration: none; color: #C8F05A; font-size: 11px; font-weight: 600">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18M5 16l4-5 4 3 6-8"></path></svg>Progress</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { range: '12W' };
+  }
+  renderVals() {
+    var self = this;
+    var cur = this.state.range;
+    return {
+      ranges: ['4W', '12W', 'All'].map(function (l) {
+        var on = l === cur;
+        return {
+          label: l, on: on ? 'true' : 'false',
+          pick: function () { self.setState({ range: l }); },
+          style: 'min-width:44px;height:38px;padding:0 10px;border-radius:9px;border:0;font:inherit;font-size:13px;font-weight:600;cursor:pointer;' +
+            (on ? 'background:#F2F4F7;color:#0E1013' : 'background:transparent;color:#9AA3AF')
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

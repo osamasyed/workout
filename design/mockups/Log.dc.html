@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Log workout — Push Day</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0E1013}
+a{color:#C8F05A}a:hover{color:#E2FF8F}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0E1013; color: #F2F4F7; font-family: Inter, system-ui, sans-serif; box-sizing: border-box">
+  <header style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 8px">
+    <a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; color: #9AA3AF; font-size: 15px">Cancel</a>
+    <div style="display: flex; flex-direction: column; align-items: center">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px">Push Day</span>
+      <span style="font-size: 12px; color: #9AA3AF; font-variant-numeric: tabular-nums">24:12 elapsed</span>
+    </div>
+    <a href="Progress.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; color: #C8F05A; font-size: 15px; font-weight: 600">Finish</a>
+  </header>
+
+  <div style="height: 760px; overflow-y: auto; padding: 8px 20px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px" aria-label="Exercise 1 of 5">
+      <span style="height: 4px; border-radius: 2px; background: #C8F05A"></span>
+      <span style="height: 4px; border-radius: 2px; background: #2A2F37"></span>
+      <span style="height: 4px; border-radius: 2px; background: #2A2F37"></span>
+      <span style="height: 4px; border-radius: 2px; background: #2A2F37"></span>
+      <span style="height: 4px; border-radius: 2px; background: #2A2F37"></span>
+    </div>
+
+    <section style="background: #171A1F; border: 1px solid #23272E; border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 12px; color: #FF9A4D; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase">Exercise 1 of 5</span>
+          <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700">Flat DB Bench Press</h1>
+          <span style="font-size: 13px; color: #9AA3AF">Target 4 × 8–10 · rest 90s</span>
+        </div>
+        <a href="Exercise.dc.html" aria-label="View form animation" style="width: 44px; height: 44px; border-radius: 12px; background: #20242B; color: #F2F4F7; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M10 8.5v7l5.5-3.5z"></path></svg>
+        </a>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 28px minmax(0, 1fr) 124px 44px; gap: 10px; font-size: 11px; color: #9AA3AF; text-transform: uppercase; letter-spacing: 0.05em; padding-top: 4px">
+        <span>Set</span><span>Weight</span><span style="text-align: center">Reps</span><span style="text-align: center">Done</span>
+      </div>
+
+      <sc-for list="{{sets}}" as="s" hint-placeholder-count="4">
+        <div style="{{s.rowStyle}}">
+          <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: #9AA3AF; text-align: center">{{s.num}}</span>
+          <span style="display: flex; flex-direction: column; gap: 1px">
+            <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px">{{s.w}} <span style="font-size: 12px; color: #9AA3AF; font-weight: 500">lb</span></span>
+            <span style="font-size: 11px; color: #9AA3AF">prev {{s.prev}}</span>
+          </span>
+          <span style="display: flex; align-items: center; justify-content: space-between">
+            <button onClick="{{s.dec}}" aria-label="Fewer reps" style="width: 40px; height: 44px; border-radius: 10px; border: 1px solid #2A2F37; background: #20242B; color: #F2F4F7; font-size: 20px; cursor: pointer">−</button>
+            <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; font-variant-numeric: tabular-nums; min-width: 28px; text-align: center">{{s.reps}}</span>
+            <button onClick="{{s.inc}}" aria-label="More reps" style="width: 40px; height: 44px; border-radius: 10px; border: 1px solid #2A2F37; background: #20242B; color: #F2F4F7; font-size: 20px; cursor: pointer">+</button>
+          </span>
+          <button onClick="{{s.toggle}}" aria-pressed="{{s.pressed}}" aria-label="Mark set {{s.num}} done" style="{{s.checkStyle}}">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          </button>
+        </div>
+      </sc-for>
+
+      <button onClick="{{addSet}}" style="height: 44px; border-radius: 12px; border: 1px dashed #3A404A; background: transparent; color: #C9CFD6; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">+ Add set</button>
+    </section>
+
+    <sc-if value="{{resting}}" hint-placeholder-val="{{ true }}">
+      <section style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px; background: #22261C; border: 1px solid #3D4A1E">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C8F05A" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2.5 2M9 2h6"></path></svg>
+        <span style="flex: 1; display: flex; flex-direction: column">
+          <span style="font-size: 12px; color: #C9D4A8">Rest timer</span>
+          <span style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: #C8F05A; font-variant-numeric: tabular-nums">1:24</span>
+        </span>
+        <button style="height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid #3D4A1E; background: transparent; color: #C8F05A; font: inherit; font-weight: 600; cursor: pointer">+30s</button>
+        <button style="height: 44px; padding: 0 14px; border-radius: 12px; border: 0; background: #C8F05A; color: #0E1013; font: inherit; font-weight: 600; cursor: pointer">Skip</button>
+      </section>
+    </sc-if>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+      <div style="background: #171A1F; border: 1px solid #23272E; border-radius: 14px; padding: 10px 12px; display: flex; flex-direction: column"><span style="font-size: 12px; color: #9AA3AF">Sets done</span><span style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600">{{doneCount}} / {{total}}</span></div>
+      <div style="background: #171A1F; border: 1px solid #23272E; border-radius: 14px; padding: 10px 12px; display: flex; flex-direction: column"><span style="font-size: 12px; color: #9AA3AF">Volume</span><span style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600">{{volume}} lb</span></div>
+      <div style="background: #171A1F; border: 1px solid #23272E; border-radius: 14px; padding: 10px 12px; display: flex; flex-direction: column"><span style="font-size: 12px; color: #9AA3AF">Best e1RM</span><span style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600">{{e1rm}}</span></div>
+    </div>
+
+    <section style="display: flex; flex-direction: column; gap: 6px">
+      <h2 style="margin: 0 0 4px; font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: #C9CFD6">Up next</h2>
+      <sc-for list="{{next}}" as="n" hint-placeholder-count="4">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 14px; background: #171A1F; border: 1px solid #23272E">
+          <span style="font-size: 14px; font-weight: 500">{{n.name}}</span>
+          <span style="font-size: 12px; color: #9AA3AF">{{n.target}}</span>
+        </div>
+      </sc-for>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sets: [
+        { w: 70, reps: 10, done: true, prev: '70×10' },
+        { w: 70, reps: 9, done: true, prev: '70×9' },
+        { w: 70, reps: 8, done: false, prev: '70×8' },
+        { w: 70, reps: 8, done: false, prev: '65×10' }
+      ]
+    };
+  }
+  update(i, patch) {
+    var sets = this.state.sets.map(function (s, j) { return j === i ? Object.assign({}, s, patch) : s; });
+    this.setState({ sets: sets });
+  }
+  renderVals() {
+    var self = this;
+    var sets = this.state.sets;
+    var done = sets.filter(function (s) { return s.done; });
+    var volume = done.reduce(function (a, s) { return a + s.w * s.reps; }, 0);
+    var e1 = done.reduce(function (a, s) { return Math.max(a, s.w * (1 + s.reps / 30)); }, 0);
+    return {
+      sets: sets.map(function (s, i) {
+        return {
+          num: i + 1, w: s.w, reps: s.reps, prev: s.prev, pressed: s.done ? 'true' : 'false',
+          inc: function () { self.update(i, { reps: s.reps + 1 }); },
+          dec: function () { self.update(i, { reps: Math.max(0, s.reps - 1) }); },
+          toggle: function () { self.update(i, { done: !s.done }); },
+          rowStyle: 'display:grid;grid-template-columns:28px minmax(0,1fr) 124px 44px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid #23272E;' + (s.done ? 'opacity:1' : ''),
+          checkStyle: 'width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;' +
+            (s.done ? 'background:#C8F05A;color:#0E1013;border:1px solid #C8F05A' : 'background:#20242B;color:#6B7380;border:1px solid #2A2F37')
+        };
+      }),
+      addSet: function () {
+        var last = sets[sets.length - 1];
+        self.setState({ sets: sets.concat([{ w: last.w, reps: last.reps, done: false, prev: '—' }]) });
+      },
+      resting: done.length > 0 && done.length < sets.length,
+      doneCount: done.length,
+      total: sets.length,
+      volume: volume.toLocaleString('en-US'),
+      e1rm: e1 ? Math.round(e1) + ' lb' : '—',
+      next: [
+        { name: 'Incline DB Press', target: '3 × 10–12' },
+        { name: 'Seated DB Shoulder Press', target: '3 × 8–10' },
+        { name: 'DB Lateral Raise', target: '3 × 12–15' },
+        { name: 'Overhead DB Triceps Ext.', target: '3 × 10–12' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

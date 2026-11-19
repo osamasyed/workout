@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Seated Dumbbell Shoulder Press</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0E1013}
+a{color:#C8F05A}a:hover{color:#E2FF8F}
+.ppl-fr{opacity:0;animation:ppl-fr var(--dur,4s) step-end infinite;animation-play-state:var(--play,running)}
+@keyframes ppl-fr{0%{opacity:1}2.7778%{opacity:0}100%{opacity:0}}
+.ppl-ph{animation:var(--dur,4s) step-end infinite;animation-play-state:var(--play,running)}
+.ppl-ph0{animation-name:ppl-ph0}.ppl-ph1{animation-name:ppl-ph1}.ppl-ph2{animation-name:ppl-ph2}.ppl-ph3{animation-name:ppl-ph3}
+@keyframes ppl-ph0{0%{background:var(--acc);color:#0E1013}15%{background:#20242B;color:#9AA3AF}100%{background:#20242B;color:#9AA3AF}}
+@keyframes ppl-ph1{0%{background:#20242B;color:#9AA3AF}15%{background:var(--acc);color:#0E1013}40%{background:#20242B;color:#9AA3AF}100%{background:#20242B;color:#9AA3AF}}
+@keyframes ppl-ph2{0%{background:#20242B;color:#9AA3AF}40%{background:var(--acc);color:#0E1013}50%{background:#20242B;color:#9AA3AF}100%{background:#20242B;color:#9AA3AF}}
+@keyframes ppl-ph3{0%{background:#20242B;color:#9AA3AF}50%{background:var(--acc);color:#0E1013}100%{background:var(--acc);color:#0E1013}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0E1013; color: #F2F4F7; font-family: Inter, system-ui, sans-serif; box-sizing: border-box; --dur: {{dur}}; --play: {{play}}; --acc: {{accent}}">
+  <div style="height: 756px; overflow-y: auto; padding: 12px 20px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+    <a href="Library.dc.html" style="display: inline-flex; align-items: center; gap: 6px; min-height: 44px; width: fit-content; text-decoration: none; color: #9AA3AF; font-size: 15px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Library</a>
+
+    <header style="display: flex; flex-direction: column; gap: 8px">
+      <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 26px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em">Seated Dumbbell Shoulder Press</h1>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap">
+        <span style="padding: 4px 10px; border-radius: 999px; background: #2B2118; color: #FF9A4D; font-size: 12px; font-weight: 600">Push</span>
+        <span style="padding: 4px 10px; border-radius: 999px; background: #20242B; color: #C9CFD6; font-size: 12px">Shoulders</span>
+        <span style="padding: 4px 10px; border-radius: 999px; background: #20242B; color: #C9CFD6; font-size: 12px">Triceps</span>
+        <span style="padding: 4px 10px; border-radius: 999px; background: #20242B; color: #C9CFD6; font-size: 12px">Bench upright, 80–90°</span>
+      </div>
+    </header>
+
+    <div role="group" aria-label="Form mode" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 3px; border-radius: 14px; background: #171A1F; border: 1px solid #23272E">
+      <sc-for list="{{modes}}" as="m" hint-placeholder-count="2">
+        <button onClick="{{m.pick}}" aria-pressed="{{m.on}}" style="{{m.style}}">{{m.label}}</button>
+      </sc-for>
+    </div>
+
+    <figure style="margin: 0; flex-shrink: 0; background: #171A1F; border: 1px solid {{frameBorder}}; border-radius: 20px; overflow: hidden; position: relative">
+      <span style="position: absolute; top: 10px; left: 12px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; background: {{badgeBg}}; color: {{badgeFg}}">{{badgeText}}</span>
+      <svg viewBox="0 0 360 330" width="100%" height="318" role="img" aria-label="{{figLabel}}" style="display: block">
+        <ellipse cx="180" cy="314" rx="120" ry="10" fill="#0E1013" opacity="0.7"></ellipse>
+        <sc-for list="{{bench}}" as="p" hint-placeholder-count="12">
+          <path d="{{p.d}}" fill="{{p.fill}}" stroke="{{p.stroke}}" stroke-width="{{p.sw}}" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="{{p.dash}}" opacity="{{p.op}}"></path>
+        </sc-for>
+        <sc-for list="{{backFrames}}" as="fr" hint-placeholder-count="1">
+          <g class="ppl-fr" style="{{fr.style}}">
+            <sc-for list="{{fr.paths}}" as="p" hint-placeholder-count="7">
+              <path d="{{p.d}}" fill="{{p.fill}}" stroke="{{p.stroke}}" stroke-width="{{p.sw}}" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="{{p.dash}}" opacity="{{p.op}}"></path>
+            </sc-for>
+          </g>
+        </sc-for>
+        <sc-for list="{{body}}" as="p" hint-placeholder-count="14">
+          <path d="{{p.d}}" fill="{{p.fill}}" stroke="{{p.stroke}}" stroke-width="{{p.sw}}" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="{{p.dash}}" opacity="{{p.op}}"></path>
+        </sc-for>
+        <sc-for list="{{frontFrames}}" as="fr" hint-placeholder-count="1">
+          <g class="ppl-fr" style="{{fr.style}}">
+            <sc-for list="{{fr.paths}}" as="p" hint-placeholder-count="7">
+              <path d="{{p.d}}" fill="{{p.fill}}" stroke="{{p.stroke}}" stroke-width="{{p.sw}}" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="{{p.dash}}" opacity="{{p.op}}"></path>
+            </sc-for>
+          </g>
+        </sc-for>
+        <sc-for list="{{guides}}" as="p" hint-placeholder-count="3">
+          <path d="{{p.d}}" fill="{{p.fill}}" stroke="{{p.stroke}}" stroke-width="{{p.sw}}" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="{{p.dash}}" opacity="{{p.op}}"></path>
+        </sc-for>
+      </svg>
+      <figcaption style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 0 10px 10px">
+        <sc-for list="{{phases}}" as="f" hint-placeholder-count="4">
+          <span class="{{f.cls}}" style="{{f.style}}">{{f.label}}</span>
+        </sc-for>
+      </figcaption>
+    </figure>
+
+    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
+      <button onClick="{{toggle}}" aria-label="{{playLabel}}" style="width: 48px; height: 44px; border-radius: 12px; border: 1px solid #2A2F37; background: #171A1F; color: #F2F4F7; display: flex; align-items: center; justify-content: center; cursor: pointer">
+        <sc-if value="{{paused}}" hint-placeholder-val="{{ false }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg>
+        </sc-if>
+        <sc-if value="{{running}}" hint-placeholder-val="{{ true }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>
+        </sc-if>
+      </button>
+      <button onClick="{{slow}}" aria-pressed="{{slowOn}}" style="{{slowStyle}}">0.5×</button>
+      <div role="group" aria-label="Camera angle" style="display: flex; gap: 4px; margin-left: auto; padding: 3px; border-radius: 12px; background: #171A1F; border: 1px solid #23272E">
+        <sc-for list="{{views}}" as="v" hint-placeholder-count="3">
+          <button onClick="{{v.pick}}" aria-pressed="{{v.on}}" style="{{v.style}}">{{v.label}}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <section style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600">{{listTitle}}</h2>
+      <sc-for list="{{points}}" as="c" hint-placeholder-count="4">
+        <div style="display: flex; gap: 12px; padding: 12px; border-radius: 14px; background: #171A1F; border: 1px solid #23272E">
+          <span style="{{c.iconStyle}}">{{c.icon}}</span>
+          <span style="display: flex; flex-direction: column; gap: 3px">
+            <span style="font-size: 14px; font-weight: 600">{{c.title}}</span>
+            <span style="font-size: 13px; line-height: 1.45; color: #B8C0CA">{{c.body}}</span>
+          </span>
+        </div>
+      </sc-for>
+    </section>
+
+    <section style="background: #171A1F; border: 1px solid #23272E; border-radius: 16px; padding: 14px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+      <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #9AA3AF">Best set</span><span style="font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600">45 × 10</span></div>
+      <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #9AA3AF">Est. 1RM</span><span style="font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600">60 lb</span></div>
+      <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #9AA3AF">Sessions</span><span style="font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600">14</span></div>
+    </section>
+  </div>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 88px; padding: 12px 20px 20px; box-sizing: border-box; background: #12151A; border-top: 1px solid #23272E; display: flex; gap: 10px">
+    <a href="Progress.dc.html" style="flex: 1; display: flex; align-items: center; justify-content: center; border-radius: 14px; border: 1px solid #2A2F37; color: #F2F4F7; text-decoration: none; font-weight: 600; font-size: 15px">History</a>
+    <a href="Log.dc.html" style="flex: 2; display: flex; align-items: center; justify-content: center; border-radius: 14px; background: #C8F05A; color: #0E1013; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px">Add to today</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { view: 40, speed: 1, paused: false, mode: 'correct' };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var mistake = s.mode === 'mistake';
+    var good = '#C8F05A', bad = '#FF5C61';
+    var N = 36, DUR = 4 / s.speed;
+
+    function add(a, b) { return [a[0] + b[0], a[1] + b[1], a[2] + b[2]]; }
+    function sub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
+    function mul(a, k) { return [a[0] * k, a[1] * k, a[2] * k]; }
+    function dot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+    function len(a) { return Math.sqrt(dot(a, a)); }
+    function nrm(a) { var l = len(a) || 1; return mul(a, 1 / l); }
+    function lerp(a, b, k) { return add(a, mul(sub(b, a), k)); }
+    function ease(e) { return e < 0.5 ? 2 * e * e : 1 - Math.pow(-2 * e + 2, 2) / 2; }
+    function ik(S, H, L1, L2, pole) {
+      var D = sub(H, S), d = Math.min(len(D), L1 + L2 - 0.3), dir = nrm(D);
+      var a = (L1 * L1 - L2 * L2 + d * d) / (2 * d);
+      var h = Math.sqrt(Math.max(0, L1 * L1 - a * a));
+      var pp = nrm(sub(pole, mul(dir, dot(pole, dir))));
+      return [add(add(S, mul(dir, a)), mul(pp, h)), add(S, mul(dir, d))];
+    }
+    function shade(hex, f) {
+      var n = parseInt(hex.slice(1), 16);
+      return 'rgb(' + Math.min(255, Math.round(((n >> 16) & 255) * f)) + ',' + Math.min(255, Math.round(((n >> 8) & 255) * f)) + ',' + Math.min(255, Math.round((n & 255) * f)) + ')';
+    }
+    // tempo: hold at bottom, press 1s, lockout, lower 2s
+    function pressAt(t) {
+      if (t < 0.15) return 0;
+      if (t < 0.4) return ease((t - 0.15) / 0.25);
+      if (t < 0.5) return 1;
+      return 1 - ease((t - 0.5) / 0.5);
+    }
+
+    var th = s.view * Math.PI / 180, c = Math.cos(th), sn = Math.sin(th), K = 1.75, side = Math.abs(sn);
+    function P(v) {
+      var rx = v[0], ry = v[1] - 70, rz = v[2] - 18;
+      return { x: 180 + (rx * c + rz * sn) * K, y: 190 - ry * K, d: rz * c - rx * sn };
+    }
+    function f1(n) { return n.toFixed(1); }
+    function lit(d) { return 0.7 + 0.3 * Math.max(0, Math.min(1, (d + 35) / 70)); }
+    function seg(out, A, B, w, col, flat) {
+      var a = P(A), b = P(B), d = (a.d + b.d) / 2;
+      var bx = (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) < 0.05) ? a.x + 0.05 : b.x;
+      out.push({ d: 'M' + f1(a.x) + ' ' + f1(a.y) + ' L' + f1(bx) + ' ' + f1(b.y), fill: 'none', stroke: flat ? col : shade(col, lit(d)), sw: f1(w * K), dash: 'none', op: '1', z: d });
+    }
+    function poly(out, pts, col) {
+      var q = pts.map(P), d = 0;
+      q.forEach(function (o) { d += o.d; });
+      out.push({ d: 'M' + q.map(function (o) { return f1(o.x) + ' ' + f1(o.y); }).join(' L') + ' Z', fill: col, stroke: col, sw: '0.6', dash: 'none', op: '1', z: d / q.length });
+    }
+    function box(out, cs, top, sideC, front) {
+      [[0, 1, 2, 3, front], [4, 5, 6, 7, front], [0, 1, 5, 4, sideC], [3, 2, 6, 7, top], [0, 3, 7, 4, sideC], [1, 2, 6, 5, sideC]].forEach(function (f) {
+        poly(out, [cs[f[0]], cs[f[1]], cs[f[2]], cs[f[3]]], f[4]);
+      });
+    }
+    function byZ(a, b) { return a.z - b.z; }
+
+    // ---- bench (always behind the body)
+    var bench = [];
+    box(bench, [[-17, 40, -16], [17, 40, -16], [17, 47, -16], [-17, 47, -16], [-17, 40, 28], [17, 40, 28], [17, 47, 28], [-17, 47, 28]], '#4A5361', '#353C47', '#3E4652');
+    box(bench, [[-16, 46, -24], [16, 46, -24], [16, 122, -30], [-16, 122, -30], [-16, 46, -17], [16, 46, -17], [16, 122, -23], [-16, 122, -23]], '#4A5361', '#353C47', '#3E4652');
+    seg(bench, [0, 40, 6], [0, 4, 6], 5, '#5A6372', true);
+    seg(bench, [0, 2, -26], [0, 2, 36], 5, '#5A6372', true);
+    seg(bench, [-20, 2, -26], [20, 2, -26], 5, '#5A6372', true);
+    seg(bench, [-20, 2, 36], [20, 2, 36], 5, '#5A6372', true);
+    seg(bench, [0, 44, -20], [0, 44, -6], 5, '#5A6372', true);
+    bench.sort(byZ);
+
+    // ---- body (static during the rep)
+    var skin = '#E2D2C2', shirt = '#6F7B90', shorts = '#4E5869', shoe = '#C9CFD6', warn = '#B4454A';
+    var mid = mistake ? [0, 78, 5] : [0, 78, -4];
+    var neck = mistake ? [0, 103, -10] : [0, 103, -5];
+    var body = [];
+    seg(body, [-10, 52, -2], [10, 52, -2], 17, shorts);
+    seg(body, [0, 54, -3], mid, 26 - 6 * side, mistake ? warn : shirt);
+    seg(body, mid, add(neck, [0, -5, 0]), 31 - 9 * side, shirt);
+    var shL = add(neck, [-18, -3, 0]), shR = add(neck, [18, -3, 0]);
+    seg(body, shL, shR, 11, shirt);
+    seg(body, neck, add(neck, [0, 9, 1]), 9, skin);
+    var head = add(neck, [0, 20, 1]);
+    seg(body, head, head, 20, skin);
+    seg(body, head, add(neck, [0, 14, 7]), 13, skin);
+    [-1, 1].forEach(function (sg) {
+      seg(body, [sg * 10, 52, 0], [sg * 16, 52, 44], 13.5, shorts);
+      seg(body, [sg * 16, 52, 44], [sg * 18, 8, 46], 9.5, skin);
+      seg(body, [sg * 18, 3.5, 42], [sg * 19, 3.5, 60], 7.5, shoe);
+    });
+    body.sort(byZ);
+    var torsoZ = P([0, 80, -4]).d;
+
+    // ---- arms: one pre-computed frame per 1/N of the rep, shown in turn by CSS
+    var backFrames = [], frontFrames = [], guides = [];
+    [-1, 1].forEach(function (sg) {
+      var S = sg < 0 ? shL : shR;
+      var hB = mistake ? [sg * 46, 108, -9] : [sg * 40, 112, 5];
+      var hT = mistake ? [sg * 10, 151, -14] : [sg * 13, 153, 1];
+      var poleB = mistake ? [sg, -0.15, -0.8] : [sg, -0.6, 0.55];
+      var poleT = mistake ? [sg, 0, -0.6] : [sg, 0, 0.35];
+      var target = P(S).d < torsoZ - 3 ? backFrames : frontFrames;
+      for (var k = 0; k < N; k++) {
+        var p = pressAt(k / N);
+        var r = ik(S, lerp(hB, hT, p), 28, 27, lerp(poleB, poleT, p));
+        var E = r[0], H = r[1], out = [];
+        seg(out, S, lerp(S, E, 0.45), 10, mistake ? warn : shirt);
+        seg(out, lerp(S, E, 0.3), E, 8, skin);
+        seg(out, E, H, 7, skin);
+        seg(out, add(H, [-6, 0, 0]), add(H, [6, 0, 0]), 2.6, '#9AA3AF');
+        seg(out, add(H, [-10, 0, 0]), add(H, [-7, 0, 0]), 12, '#5A6372');
+        seg(out, add(H, [7, 0, 0]), add(H, [10, 0, 0]), 12, '#5A6372');
+        out.sort(byZ);
+        seg(out, H, H, 7.5, skin);
+        target.push({ paths: out, style: 'animation-delay:-' + (((N - k) % N) / N * DUR).toFixed(3) + 's' });
+      }
+      var a = P(hB), b = P(hT);
+      guides.push({ d: 'M' + f1(a.x) + ' ' + f1(a.y) + ' L' + f1(b.x) + ' ' + f1(b.y), fill: 'none', stroke: mistake ? bad : good, sw: '1.6', dash: '3 5', op: '0.85' });
+    });
+    if (side > 0.45) {
+      var g1 = P([0, 58, -16]), g2 = P([0, mistake ? 86 : 100, -16]);
+      guides.push({ d: 'M' + f1(g1.x) + ' ' + f1(g1.y) + ' L' + f1(g2.x) + ' ' + f1(g2.y), fill: 'none', stroke: mistake ? bad : good, sw: '3', dash: mistake ? '4 4' : 'none', op: '0.95' });
+    }
+
+    var accent = mistake ? bad : good;
+    var seg2 = function (on) {
+      return 'height:40px;padding:0 10px;border-radius:9px;border:0;font:inherit;font-size:13px;font-weight:600;cursor:pointer;' +
+        (on ? 'background:#F2F4F7;color:#0E1013' : 'background:transparent;color:#9AA3AF');
+    };
+    var good4 = [
+      ['Back flat on the pad', 'Ribs down, glutes on the seat. The green line is your back staying in contact the whole rep.'],
+      ['Feet planted wide', 'Knees over ankles gives you a stable base so your lower back doesn’t have to compensate.'],
+      ['Elbows slightly forward', 'Keep elbows about 30° in front of your body with wrists stacked over them — easier on the shoulder joint.'],
+      ['Press up and slightly in', 'Finish over your shoulders without clanking the bells, then lower for 2 seconds to ear height.']
+    ];
+    var bad3 = [
+      ['Lower back arching off the pad', 'Turns it into a standing-press lean and loads your lumbar spine. Lower the weight until you can stay flat.'],
+      ['Elbows flared out and behind', 'Pins the rotator cuff under the shoulder blade (impingement). Bring elbows forward of your torso.'],
+      ['Bells drifting behind your head', 'Puts the shoulder in a weak, stretched position. The dumbbells should finish directly over your shoulders.']
+    ];
+    var list = mistake ? bad3 : good4;
+    var pill = 'text-align:center;padding:8px 0;border-radius:10px;font-size:12px;font-weight:600;background:#20242B;color:#9AA3AF';
+
+    return {
+      bench: bench, body: body, backFrames: backFrames, frontFrames: frontFrames, guides: guides,
+      dur: DUR + 's',
+      play: s.paused ? 'paused' : 'running',
+      accent: accent,
+      figLabel: mistake
+        ? 'Full-body figure demonstrating common mistakes: lower back arched off the bench and elbows flared behind the body'
+        : 'Full-body figure seated on an upright bench pressing two dumbbells overhead with back flat on the pad and elbows slightly forward',
+      frameBorder: mistake ? '#5A2A2D' : '#23272E',
+      badgeBg: mistake ? '#3A1C1E' : '#22261C',
+      badgeFg: accent,
+      badgeText: mistake ? 'Mistakes shown' : 'Correct form',
+      phases: ['Set', 'Press · 1s', 'Lockout', 'Lower · 2s'].map(function (n, i) {
+        return { label: n, cls: 'ppl-ph ppl-ph' + i, style: pill };
+      }),
+      modes: [['correct', 'Correct form'], ['mistake', 'Common mistakes']].map(function (m) {
+        var on = s.mode === m[0];
+        return {
+          label: m[1], on: on ? 'true' : 'false',
+          pick: function () { self.setState({ mode: m[0] }); },
+          style: 'height:44px;border-radius:11px;border:0;font:inherit;font-size:14px;font-weight:600;cursor:pointer;' +
+            (on ? 'background:' + (m[0] === 'mistake' ? bad : good) + ';color:#0E1013' : 'background:transparent;color:#C9CFD6')
+        };
+      }),
+      views: [['Front', 0], ['¾', 40], ['Side', 90]].map(function (v) {
+        var on = s.view === v[1];
+        return { label: v[0], on: on ? 'true' : 'false', pick: function () { self.setState({ view: v[1] }); }, style: seg2(on) + 'min-width:44px;' };
+      }),
+      paused: s.paused,
+      running: !s.paused,
+      playLabel: s.paused ? 'Play animation' : 'Pause animation',
+      toggle: function () { self.setState({ paused: !self.state.paused }); },
+      slow: function () { self.setState({ speed: self.state.speed === 1 ? 0.5 : 1 }); },
+      slowOn: s.speed === 0.5 ? 'true' : 'false',
+      slowStyle: 'height:44px;padding:0 14px;border-radius:12px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;' +
+        (s.speed === 0.5 ? 'background:#F2F4F7;color:#0E1013;border:1px solid #F2F4F7' : 'background:#171A1F;color:#F2F4F7;border:1px solid #2A2F37'),
+      listTitle: mistake ? 'What can hurt you' : 'Form checkpoints',
+      points: list.map(function (it, i) {
+        return {
+          icon: mistake ? '✕' : String(i + 1), title: it[0], body: it[1],
+          iconStyle: 'width:26px;height:26px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:\'Space Grotesk\',sans-serif;font-weight:700;font-size:13px;' +
+            (mistake ? 'background:#3A1C1E;color:' + bad : 'background:#22261C;color:' + good)
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>
