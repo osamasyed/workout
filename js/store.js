@@ -1,5 +1,6 @@
 // Saves everything on this device (localStorage). Nothing leaves the phone.
-import { DEFAULT_PLANS, DAYS, byId } from './exercises.js';
+import { DAYS, byId } from './exercises.js';
+import { DEFAULT_PROGRAM, copyPlans, programById } from './programs.js';
 
 const KEY = 'ppl-tracker';
 const VERSION = 1;
@@ -7,8 +8,9 @@ const VERSION = 1;
 export function defaultState() {
   return {
     version: VERSION,
-    settings: { unit: 'lb', restSec: 90, step: 5 },
-    plans: JSON.parse(JSON.stringify(DEFAULT_PLANS)),
+    settings: { unit: 'lb', restSec: DEFAULT_PROGRAM.restSec, step: 5, daysPerWeek: DEFAULT_PROGRAM.daysPerWeek },
+    program: { id: DEFAULT_PROGRAM.id, custom: false },
+    plans: copyPlans(DEFAULT_PROGRAM.plans),
     sessions: [],
     active: null,
   };
@@ -22,6 +24,7 @@ export function normalize(data) {
     version: VERSION,
     settings: { ...base.settings, ...(data.settings || {}) },
     plans: {},
+    program: { id: DEFAULT_PROGRAM.id, custom: false },
     sessions: Array.isArray(data.sessions) ? data.sessions.filter(validSession) : [],
     active: data.active && validSession(data.active) ? data.active : null,
   };
@@ -29,6 +32,8 @@ export function normalize(data) {
     const p = data.plans && Array.isArray(data.plans[d]) ? data.plans[d].filter((x) => x && byId[x.id]) : null;
     out.plans[d] = p && p.length ? p : base.plans[d];
   }
+  if (data.program && programById[data.program.id]) out.program = { id: data.program.id, custom: !!data.program.custom };
+  else if (data.plans) out.program.custom = JSON.stringify(out.plans) !== JSON.stringify(DEFAULT_PROGRAM.plans);
   return out;
 }
 

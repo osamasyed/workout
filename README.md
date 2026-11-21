@@ -9,7 +9,12 @@ No account and no server: your workouts are saved on your phone, and it works of
 - **Workout logging.** Weight (lb) and reps per set, a check to mark each set done, a rest timer (vibrates/beeps), add/remove sets and exercises.
   It pre-fills last time's weight and suggests going up when you hit the top of your rep range.
 - **Form pictures.** Start, finish and common-mistake pictures with numbered checkpoints, from front, ¾ or side.
-  17 of the 25 exercises have pictures so far (all 15 in the default plans).
+  17 of the 27 exercises have pictures so far (all 15 in the original Muscle Builder plan).
+- **Programs.** Six ready-made PPL programs (Muscle Builder, Strength, Beginner, Express, Upper-Body Focus, Lower-Body Focus),
+  each with its own exercises, rep ranges, rest time and days per week. You can edit any day afterwards.
+- **Muscle map.** Front and back body diagrams coloured by how many sets per week each muscle gets from your plan.
+  If an edit leaves a muscle untrained, you get a caution (also on the Today screen) with a recommended exercise you can add in one tap.
+- **Calendar.** A month view on the Progress tab showing which days you trained, coloured by Push / Pull / Legs; tap a day to open that workout.
 - **Progress.** Estimated 1-rep max per exercise, weekly volume, Push/Pull/Legs balance, personal bests and workout history.
 - **Your data.** Export / import a backup file from Settings.
 
@@ -33,15 +38,17 @@ Netlify or Cloudflare Pages. Then open the address on your phone:
 ```sh
 npm test
 ```
-Covers the rotation, strength estimates, weight suggestions, weekly stats, personal bests and backup import.
+Covers the rotation, strength estimates, weight suggestions, weekly stats, personal bests, muscle coverage, programs, the calendar and backup import.
 
 ## Code map
 | File | What's in it |
 |---|---|
 | `js/app.js` | Screens, navigation and button handling |
-| `js/exercises.js` | Exercise library, form cues, mistakes, picture poses and default plans |
+| `js/exercises.js` | Exercise library, muscles worked, form cues, mistakes and picture poses |
 | `js/figure.js` | Draws the 3D mannequin and benches as SVG from a pose |
-| `js/logic.js` | Rotation, estimated 1RM, suggestions and stats (no UI) |
+| `js/logic.js` | Rotation, estimated 1RM, suggestions, stats, muscle coverage and calendar (no UI) |
+| `js/programs.js` | The built-in training programs |
+| `js/musclemap.js` | Front / back muscle diagram |
 | `js/store.js` | Saving to the phone, backup export / import |
 | `js/charts.js` | Line and bar charts |
 | `sw.js`, `manifest.webmanifest` | Offline support and home-screen install |

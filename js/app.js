@@ -1,9 +1,12 @@
-import { EXERCISES, byId, DAYS, DEFAULT_PLANS } from './exercises.js';
+import { EXERCISES, byId, DAYS, MUSCLES } from './exercises.js';
+import { PROGRAMS, programById, copyPlans } from './programs.js';
+import { muscleMapSVG, STATUS_COLORS } from './musclemap.js';
 import { renderExerciseStills } from './figure.js';
 import { load, save, exportJSON, importJSON, uid, requestPersistence, defaultState } from './store.js';
 import {
   nextDay, lastSession, daysBetween, e1rm, lastPerformance, suggestWeight, e1rmHistory, allTimeBest,
   weeklyVolume, setsByDay, findPRs, recentPRs, sessionVolume, bestSetOf,
+  coverageReport, muscleStatus, calendarMonth, workoutsThisWeek,
 } from './logic.js';
 import { lineChart, barChart } from './charts.js';
 
@@ -11,7 +14,7 @@ const COLORS = { Push: '#FF9A4D', Pull: '#5AB0FF', Legs: '#B79CFF' };
 const TINTS = { Push: '#2B2118', Pull: '#16232F', Legs: '#221D2E' };
 
 let state = load();
-const ui = { pick: null, libDay: 'All', q: '', img: 'start', views: {}, range: '12W', progEx: null, restEnd: 0, restDone: 0, toast: null };
+const ui = { calOffset: 0, pick: null, libDay: 'All', q: '', img: 'start', views: {}, range: '12W', progEx: null, restEnd: 0, restDone: 0, toast: null };
 const app = document.getElementById('app');
 
 // ---------------------------------------------------------------- helpers
@@ -34,6 +37,10 @@ const icon = {
   today: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4h-4"/></svg>',
   lib: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg>',
   prog: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M5 16l4-5 4 3 6-8"/></svg>',
+  plan: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3"/></svg>',
+  warn: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/></svg>',
+  left: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>',
+  right: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>',
   back: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>',
   play: '<svg viewBox="0 0 24 24" aria-hidden="true" class="fill"><path d="M7 4.5v15l12-7.5z"/></svg>',
   check: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
@@ -53,10 +60,10 @@ function route() {
 
 function render() {
   const r = route();
-  const views = { today: viewToday, library: viewLibrary, exercise: viewExercise, workout: viewWorkout, progress: viewProgress, session: viewSession, settings: viewSettings };
+  const views = { today: viewToday, library: viewLibrary, exercise: viewExercise, workout: viewWorkout, progress: viewProgress, session: viewSession, settings: viewSettings, program: viewProgram, programs: viewPrograms };
   const view = views[r.name] || viewToday;
   if (r.name === 'workout' && !state.active) { location.replace('#/'); return; }
-  const tab = { today: 'today', library: 'library', exercise: 'library', progress: 'progress', session: 'progress', settings: 'today' }[r.name];
+  const tab = { today: 'today', library: 'library', exercise: 'library', progress: 'progress', session: 'progress', settings: 'today', program: 'program', programs: 'program' }[r.name];
   let html = '';
   if (ui.toast && ui.toast.until > Date.now()) html += `<div class="toast" role="status">${esc(ui.toast.msg)}</div>`;
   if (state.active && r.name !== 'workout') {
@@ -66,12 +73,12 @@ function render() {
   if (tab) html += tabbar(tab);
   html += restBar();
   app.innerHTML = html;
-  document.title = { today: 'Today', library: 'Library', exercise: 'Exercise', workout: 'Workout', progress: 'Progress', session: 'Workout', settings: 'Settings' }[r.name] + ' · PPL Tracker';
+  document.title = { today: 'Today', library: 'Library', exercise: 'Exercise', workout: 'Workout', progress: 'Progress', session: 'Workout', settings: 'Settings', program: 'Program', programs: 'Programs' }[r.name] + ' · PPL Tracker';
 }
 
 function tabbar(active) {
   const t = (id, href, ic, label) => `<a href="${href}" class="${active === id ? 'on' : ''}" ${active === id ? 'aria-current="page"' : ''}>${ic}<span>${label}</span></a>`;
-  return `<nav class="tabbar" aria-label="Main">${t('today', '#/', icon.today, 'Today')}${t('library', '#/library', icon.lib, 'Library')}${t('progress', '#/progress', icon.prog, 'Progress')}</nav>`;
+  return `<nav class="tabbar" aria-label="Main">${t('today', '#/', icon.today, 'Today')}${t('program', '#/program', icon.plan, 'Program')}${t('library', '#/library', icon.lib, 'Library')}${t('progress', '#/progress', icon.prog, 'Progress')}</nav>`;
 }
 
 // ---------------------------------------------------------------- Today
@@ -104,13 +111,14 @@ function viewToday() {
       <p class="sub">${last ? `Last workout: <b style="color:${COLORS[last.day]}">${last.day}</b> · ${fmtDate(last.finishedAt)} (${rel(last.finishedAt)})` : 'No workouts yet — the rotation starts with Push.'}</p></div>
     <a class="iconbtn" href="#/settings" aria-label="Settings">${icon.gear}</a>
   </header>
+  ${cautionBanner()}
   <section class="card">
-    <div class="cardhd"><h2>Rotation</h2><small>Push → Pull → Legs → repeat</small></div>
+    <div class="cardhd"><h2>Rotation</h2><small>${esc(programName())} · ${workoutsThisWeek(state.sessions)} of ${state.settings.daysPerWeek} this week</small></div>
     <div class="steps">${steps}</div>
     <p class="note">The rotation ignores the calendar: whatever you finish last, the next day is queued up — whether it’s been 1 day or 10. Tap another day to swap today.</p>
   </section>
   <section class="card">
-    <div class="cardhd"><h2>${sel} plan</h2><a href="#/settings" class="link">Edit</a></div>
+    <div class="cardhd"><h2>${sel} plan</h2><a href="#/program" class="link">Edit</a></div>
     ${rows}
   </section>
   ${state.active
@@ -297,7 +305,7 @@ function finishWorkout() {
 function viewProgress(r) {
   const done = state.sessions.filter((s) => s.finishedAt);
   if (!done.length) {
-    return `<h1 class="title">Progress</h1><div class="empty big">${icon.prog}<p>Finish your first workout and your strength trends, weekly volume and personal bests will show up here.</p><a class="cta" href="#/">Go to today’s workout</a></div>`;
+    return `<h1 class="title">Progress</h1>${calendarSection()}<div class="empty big">${icon.prog}<p>Finish your first workout and your strength trends, weekly volume and personal bests will show up here.</p><a class="cta" href="#/">Go to today’s workout</a></div>`;
   }
   const withHistory = EXERCISES.filter((e) => e1rmHistory(done, e.id).length);
   const qEx = r.query.get('ex');
@@ -321,6 +329,7 @@ function viewProgress(r) {
   const options = DAYS.map((d) => `<optgroup label="${d}">${withHistory.filter((e) => e.day === d).map((e) => `<option value="${e.id}" ${e.id === ex.id ? 'selected' : ''}>${esc(e.name)}</option>`).join('')}</optgroup>`).join('');
   const sessions = done.sort((a, b) => b.finishedAt - a.finishedAt).slice(0, 20);
   return `<div class="hd"><h1 class="title">Progress</h1><div class="seg" role="group" aria-label="Time range">${ranges}</div></div>
+  ${calendarSection()}
   <label class="selectbox"><span class="sr">Exercise</span><span class="dot" style="background:${COLORS[ex.day]}"></span><select data-change="progEx">${options}</select></label>
   <div class="tiles">
     <div><small>Est. 1RM</small><b>${Math.round(last.e1rm)} ${unit()}</b><small class="${change >= 0 ? 'up' : 'downc'}">${hist.length > 1 ? `${change >= 0 ? '+' : ''}${change}% · ${ui.range}` : 'first log'}</small></div>
@@ -362,9 +371,103 @@ function viewSession(r) {
   <button class="ghostbtn danger wide" data-act="delSession" data-id="${s.id}">Delete this workout</button>`;
 }
 
-// ---------------------------------------------------------------- Settings
-function viewSettings() {
-  const planEditor = DAYS.map((d) => {
+
+// ---------------------------------------------------------------- Program
+const programName = () => {
+  const p = programById[state.program.id];
+  return p ? p.name + (state.program.custom ? ' (edited)' : '') : 'Custom';
+};
+const muscleName = (id) => MUSCLES.find((m) => m.id === id).name;
+
+function cautionBanner() {
+  const r = coverageReport(state.plans, state.settings.daysPerWeek);
+  if (!r.missed.length) return '';
+  return `<a class="caution" href="#/program">${icon.warn}<span><b>Caution: your plan skips ${r.missed.map(muscleName).join(', ')}</b><small>Tap to see a recommended exercise.</small></span></a>`;
+}
+
+function coverageSection() {
+  const r = coverageReport(state.plans, state.settings.daysPerWeek);
+  const cautions = r.missed.map((m) => {
+    const rec = r.recs[m];
+    return `<div class="cautionrow">${icon.warn}<span class="grow"><b>No exercise in your plan trains your ${muscleName(m).toLowerCase()}.</b>
+      ${rec ? `<small>Recommended: <a href="#/exercise/${rec.id}">${esc(byId[rec.id].name)}</a> on ${rec.day} day.</small>` : '<small>No exercise in the library targets it yet.</small>'}</span>
+      ${rec ? `<button class="addbtn" data-act="addRec" data-id="${rec.id}" data-day="${rec.day}">Add</button>` : ''}</div>`;
+  }).join('');
+  const rows = MUSCLES.map((m) => {
+    const v = r.sets[m.id], st = muscleStatus(v);
+    return `<span class="mname">${m.name}</span><span class="track"><span style="width:${Math.min(100, (v / 16) * 100)}%;background:${STATUS_COLORS[st]}"></span></span><span class="mval ${st}">${st === 'missed' ? '0' : Math.round(v)}</span>`;
+  }).join('');
+  return `<section class="card">
+    <div class="cardhd"><h2>Muscles worked</h2><small>sets per week at ${state.settings.daysPerWeek} days</small></div>
+    <div class="musclemap">${muscleMapSVG(r.sets)}</div>
+    <div class="legend"><span><i style="background:${STATUS_COLORS.good}"></i>4+ sets</span><span><i style="background:${STATUS_COLORS.low}"></i>Light (1–3)</span><span><i class="miss"></i>Not trained</span></div>
+    ${cautions}
+    ${r.low.length ? `<p class="note">Light on ${r.low.map(muscleName).join(', ')}. That’s fine for a beginner or a maintenance phase; add a set or an exercise if you want more growth there.</p>` : ''}
+    <details class="mlist"><summary>Sets per muscle</summary><div class="hbars m">${rows}</div></details>
+  </section>`;
+}
+
+function viewProgram() {
+  const p = programById[state.program.id];
+  const total = DAYS.reduce((n, d) => n + state.plans[d].length, 0);
+  return `<div class="hd"><h1 class="title">Program</h1></div>
+  <section class="card progcard">
+    <small class="eyebrow">Current program</small>
+    <h2>${esc(programName())}</h2>
+    ${p ? `<p class="note">${esc(p.blurb)}</p>` : ''}
+    <div class="facts"><span><b>${state.settings.daysPerWeek}</b> days/week</span><span><b>${total}</b> exercises</span><span><b>${state.settings.restSec}s</b> rest</span></div>
+    <div class="row2"><a class="ghostbtn wide" href="#/programs">Change program</a></div>
+    <label class="inline"><span>Days per week</span><select data-change="setting" data-k="daysPerWeek">${[3, 4, 5, 6].map((v) => `<option value="${v}" ${state.settings.daysPerWeek == v ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
+  </section>
+  ${coverageSection()}
+  <h2 class="sec">Edit your days</h2>
+  ${planEditorHTML()}`;
+}
+
+function viewPrograms() {
+  const cards = PROGRAMS.map((p) => {
+    const r = coverageReport(p.plans, p.daysPerWeek);
+    const on = p.id === state.program.id;
+    const days = DAYS.map((d) => `<div class="pday"><b style="color:${COLORS[d]}">${d}</b><ul>${p.plans[d].map((x) => `<li>${esc(byId[x.id].name)} <small>${target(x)}</small></li>`).join('')}</ul></div>`).join('');
+    return `<section class="card prog ${on ? 'current' : ''}">
+      <div class="proghd"><div class="grow"><small class="eyebrow">${esc(p.goal)}</small><h2>${esc(p.name)}</h2></div>${on ? `<span class="pr">${state.program.custom ? 'Current · edited' : 'Current'}</span>` : ''}</div>
+      <p class="note">${esc(p.blurb)}</p>
+      <div class="facts"><span><b>${p.daysPerWeek}</b> days/week</span><span><b>~${p.minutes}</b> min</span><span><b>${p.restSec}s</b> rest</span></div>
+      <div class="progbody"><div class="minimap">${muscleMapSVG(r.sets, `Muscles trained by ${p.name}`)}</div>
+        <details><summary>See exercises</summary>${days}</details></div>
+      ${on && !state.program.custom ? '' : `<button class="cta ${on ? 'ghost' : ''}" data-act="useProgram" data-id="${p.id}">${on ? 'Reset to original' : 'Use this program'}</button>`}
+    </section>`;
+  }).join('');
+  return `<a class="back" href="#/program">${icon.back}Program</a><h1 class="title">Choose a program</h1>
+  <p class="note">All programs follow the Push → Pull → Legs rotation. Switching replaces your exercise plan; your workout history and progress stay.</p>
+  ${cards}`;
+}
+
+function calendarSection() {
+  const now = new Date();
+  const base = new Date(now.getFullYear(), now.getMonth() + ui.calOffset, 1);
+  const weeks = calendarMonth(base.getFullYear(), base.getMonth(), state.sessions);
+  const inMonth = state.sessions.filter((s) => s.finishedAt && new Date(s.finishedAt).getMonth() === base.getMonth() && new Date(s.finishedAt).getFullYear() === base.getFullYear());
+  const cell = (c) => {
+    const s = c.sessions[c.sessions.length - 1];
+    const cls = `cal-d${c.inMonth ? '' : ' out'}${c.today ? ' today' : ''}${s ? ' has' : ''}`;
+    const label = new Date(c.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }) + (s ? `: ${c.sessions.map((x) => x.day).join(' and ')} workout` : '');
+    return s
+      ? `<a class="${cls}" href="#/session/${s.id}" style="--c:${COLORS[s.day]};--t:${TINTS[s.day]}" aria-label="${label}"><span>${c.day}</span><i>${s.day[0]}${c.sessions.length > 1 ? '+' : ''}</i></a>`
+      : `<span class="${cls}" aria-label="${label}"><span>${c.day}</span></span>`;
+  };
+  const counts = DAYS.map((d) => `<span><i style="background:${COLORS[d]}"></i>${d} ${inMonth.filter((s) => s.day === d).length}</span>`).join('');
+  return `<section class="card cal">
+    <div class="calhd"><button class="iconbtn sm" data-act="cal" data-d="-1" aria-label="Previous month">${icon.left}</button>
+      <h2>${base.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</h2>
+      <button class="iconbtn sm" data-act="cal" data-d="1" aria-label="Next month" ${ui.calOffset >= 0 ? 'disabled' : ''}>${icon.right}</button></div>
+    <div class="cal-grid" role="grid">${['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d) => `<span class="cal-h">${d}</span>`).join('')}${weeks.flat().map(cell).join('')}</div>
+    <div class="legend">${counts}<span class="tot">${inMonth.length} workout${inMonth.length === 1 ? '' : 's'}</span></div>
+  </section>`;
+}
+
+function planEditorHTML() {
+  return DAYS.map((d) => {
     const rows = state.plans[d].map((p, i) => `<div class="planrow">
       <span class="grow t">${esc(byId[p.id].name)}</span>
       <label><span class="sr">Sets</span><input type="number" inputmode="numeric" min="1" max="10" value="${p.sets}" data-change="plan" data-day="${d}" data-i="${i}" data-k="sets"></label>
@@ -380,13 +483,16 @@ function viewSettings() {
       <div class="planhd"><span>Exercise</span><span>Sets × reps</span></div>${rows}
       <label class="addex"><span>Add exercise</span><select data-change="planAdd" data-day="${d}"><option value="">Choose…</option>${opts}</select></label></section>`;
   }).join('');
+}
+
+// ---------------------------------------------------------------- Settings
+function viewSettings() {
   const sel = (k, vals, fmt) => `<select data-change="setting" data-k="${k}">${vals.map((v) => `<option value="${v}" ${state.settings[k] == v ? 'selected' : ''}>${fmt(v)}</option>`).join('')}</select>`;
   return `<a class="back" href="#/">${icon.back}Today</a><h1 class="title">Settings</h1>
   <section class="card form">
     <label><span>Rest timer</span>${sel('restSec', [45, 60, 90, 120, 150, 180], (v) => (v < 60 ? v + 's' : `${Math.floor(v / 60)}:${String(v % 60).padStart(2, '0')}`))}</label>
     <label><span>Weight jump when you hit the top of your rep range</span>${sel('step', [2.5, 5, 10], (v) => v + ' lb')}</label>
   </section>
-  ${planEditor}
   <section class="card form"><div class="cardhd"><h2>Your data</h2></div>
     <p class="note">Everything is saved on this phone only. Export a backup now and then so you don’t lose your history if you clear your browser or switch phones.</p>
     <button class="ghostbtn wide" data-act="export">Export backup</button>
@@ -433,19 +539,41 @@ const actions = {
   cancel: () => { if (confirm('Discard this workout? Nothing will be saved.')) { state.active = null; ui.restEnd = 0; save(state); go('#/'); } },
   finish: () => finishWorkout(),
   range: (d) => { ui.range = d.r; render(); },
+  cal: (d) => { ui.calOffset = Math.min(0, ui.calOffset + Number(d.d)); render(); },
+  addRec: (d) => {
+    if (!state.plans[d.day].some((p) => p.id === d.id)) state.plans[d.day].push({ id: d.id, sets: 3, lo: 10, hi: 15 });
+    state.program.custom = true;
+    toast(`Added ${byId[d.id].name} to ${d.day} day`);
+    commit();
+  },
+  useProgram: (d) => {
+    const p = programById[d.id];
+    const msg = d.id === state.program.id ? `Reset ${p.name} to its original exercises?` : `Switch to ${p.name}? This replaces your current exercise plan. Your history stays.`;
+    if (!confirm(msg)) return;
+    state.plans = copyPlans(p.plans);
+    state.program = { id: p.id, custom: false };
+    state.settings.daysPerWeek = p.daysPerWeek;
+    state.settings.restSec = p.restSec;
+    ui.pick = null;
+    toast(`Now using ${p.name}`);
+    save(state); go('#/program');
+  },
   delSession: (d) => {
     if (confirm('Delete this workout from your history? This can’t be undone.')) {
       state.sessions = state.sessions.filter((s) => s.id !== d.id);
       save(state); go('#/progress');
     }
   },
-  planMove: (d) => { const p = state.plans[d.day], i = Number(d.i); [p[i - 1], p[i]] = [p[i], p[i - 1]]; commit(); },
+  planMove: (d) => { const p = state.plans[d.day], i = Number(d.i); [p[i - 1], p[i]] = [p[i], p[i - 1]]; state.program.custom = true; commit(); },
   planRm: (d) => {
     const p = state.plans[d.day];
     if (p.length <= 1) { alert('A day needs at least one exercise.'); return; }
-    p.splice(Number(d.i), 1); commit();
+    p.splice(Number(d.i), 1); state.program.custom = true; commit();
   },
-  planReset: (d) => { if (confirm(`Reset the ${d.day} plan to the default exercises?`)) { state.plans[d.day] = JSON.parse(JSON.stringify(DEFAULT_PLANS[d.day])); commit(); } },
+  planReset: (d) => {
+    const p = programById[state.program.id] || PROGRAMS[0];
+    if (confirm(`Reset the ${d.day} day to ${p.name}’s exercises?`)) { state.plans[d.day] = copyPlans(p.plans[d.day]); commit(); }
+  },
   export: () => {
     const blob = new Blob([exportJSON(state)], { type: 'application/json' });
     const a = document.createElement('a');
@@ -477,9 +605,10 @@ const changes = {
     const v = Math.max(1, Math.min(50, parseInt(el.value, 10) || 1));
     p[el.dataset.k] = v;
     if (p.lo > p.hi) { if (el.dataset.k === 'lo') p.hi = p.lo; else p.lo = p.hi; }
+    state.program.custom = true;
     commit();
   },
-  planAdd: (el) => { if (el.value) { state.plans[el.dataset.day].push({ id: el.value, sets: 3, lo: 8, hi: 12 }); commit(); } },
+  planAdd: (el) => { if (el.value) { state.plans[el.dataset.day].push({ id: el.value, sets: 3, lo: 8, hi: 12 }); state.program.custom = true; commit(); } },
   setting: (el) => { state.settings[el.dataset.k] = Number(el.value); commit(); },
   import: (el) => {
     const file = el.files && el.files[0];

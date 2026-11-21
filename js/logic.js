@@ -1,5 +1,5 @@
 // Pure workout logic: rotation, strength estimates, progress stats. No DOM here.
-import { DAYS } from './exercises.js';
+import { DAYS, EXERCISES, MUSCLES, byId } from './exercises.js';
 
 const DAY_MS = 86400000;
 
@@ -146,4 +146,76 @@ export function recentPRs(sessions, limit = 5) {
     }
   }
   return out.reverse().slice(0, limit);
+}
+
+// ---------------------------------------------------------------- muscle coverage
+/**
+ * Sets per week each muscle gets from the plans. A main-target exercise counts every set;
+ * a helper exercise counts half. Each day type is done daysPerWeek / 3 times a week.
+ */
+export function muscleCoverage(plans, daysPerWeek = 6) {
+  const perWeek = daysPerWeek / DAYS.length;
+  const out = Object.fromEntries(MUSCLES.map((m) => [m.id, 0]));
+  for (const d of DAYS) {
+    for (const p of plans[d] || []) {
+      const ex = byId[p.id];
+      if (!ex) continue;
+      for (const m of ex.work.p) out[m] += p.sets * perWeek;
+      for (const m of ex.work.s) out[m] += 0.5 * p.sets * perWeek;
+    }
+  }
+  return out;
+}
+
+/** 'missed' (nothing), 'low' (under 4 sets a week) or 'good'. */
+export function muscleStatus(weeklySets) {
+  if (weeklySets < 1) return 'missed';
+  if (weeklySets < 4) return 'low';
+  return 'good';
+}
+
+/** Suggest an exercise (and which day to put it on) that trains a muscle the plans are missing. */
+export function recommendFor(muscle, plans) {
+  const used = new Set(DAYS.flatMap((d) => (plans[d] || []).map((p) => p.id)));
+  const candidates = EXERCISES.filter((e) => e.work.p.includes(muscle) && !used.has(e.id));
+  if (!candidates.length) return null;
+  // prefer exercises with form pictures, then ones that only target a few muscles (more direct)
+  candidates.sort((a, b) => (b.figure ? 1 : 0) - (a.figure ? 1 : 0) || a.work.p.length - b.work.p.length);
+  const ex = candidates[0];
+  return { id: ex.id, day: ex.day };
+}
+
+export function coverageReport(plans, daysPerWeek) {
+  const sets = muscleCoverage(plans, daysPerWeek);
+  const missed = MUSCLES.filter((m) => muscleStatus(sets[m.id]) === 'missed').map((m) => m.id);
+  const low = MUSCLES.filter((m) => muscleStatus(sets[m.id]) === 'low').map((m) => m.id);
+  return { sets, missed, low, recs: Object.fromEntries(missed.map((m) => [m, recommendFor(m, plans)])) };
+}
+
+// ---------------------------------------------------------------- calendar
+export const dayKey = (t) => { const d = new Date(t); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; };
+
+/** Month grid (weeks start Monday): [[{date, day, inMonth, today, sessions}]]. */
+export function calendarMonth(year, month, sessions, now = Date.now()) {
+  const byDay = {};
+  for (const s of sessions) if (s.finishedAt) (byDay[dayKey(s.finishedAt)] ||= []).push(s);
+  const first = new Date(year, month, 1);
+  const start = new Date(year, month, 1 - ((first.getDay() + 6) % 7));
+  const weeks = [];
+  const cur = new Date(start);
+  do {
+    const week = [];
+    for (let i = 0; i < 7; i++) {
+      const t = cur.getTime();
+      week.push({ date: t, day: cur.getDate(), inMonth: cur.getMonth() === month, today: dayKey(t) === dayKey(now), sessions: byDay[dayKey(t)] || [] });
+      cur.setDate(cur.getDate() + 1);
+    }
+    weeks.push(week);
+  } while (cur.getMonth() === month);
+  return weeks;
+}
+
+export function workoutsThisWeek(sessions, now = Date.now()) {
+  const ws = startOfWeek(now);
+  return sessions.filter((s) => s.finishedAt && s.finishedAt >= ws && s.finishedAt <= now + 1).length;
 }

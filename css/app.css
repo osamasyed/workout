@@ -221,3 +221,54 @@ h1, h2 { margin: 0; font-family: var(--display); letter-spacing: -0.01em; }
   .reps button { width: 38px; }
   .hd h1 { font-size: 30px; }
 }
+
+/* caution + muscle coverage */
+.caution { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: #3A1C1E; border: 1px solid #5A2A2D; color: #FFB3B5; text-decoration: none; }
+.caution svg, .cautionrow > svg { width: 22px; height: 22px; flex-shrink: 0; color: var(--bad); }
+.caution span { display: flex; flex-direction: column; gap: 2px; } .caution b { color: #FFD6D7; } .caution small { color: #FFB3B5; }
+.cautionrow { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: #2A1719; border: 1px solid #5A2A2D; }
+.cautionrow b { font-size: 14px; font-weight: 600; color: #FFD6D7; } .cautionrow small { color: #FFB3B5; font-size: 13px; }
+.cautionrow a { color: #FFD6D7; }
+.addbtn { min-height: 40px; padding: 0 14px; border-radius: 10px; border: 0; background: var(--accent); color: var(--accent-ink); font-weight: 700; }
+.musclemap { display: flex; justify-content: center; padding: 4px 0; }
+.musclemap svg { width: 100%; max-width: 340px; height: auto; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.legend i.miss { background: var(--bad); }
+.legend .tot { margin-left: auto; color: var(--soft); font-weight: 600; }
+.mlist summary { cursor: pointer; color: var(--accent); font-size: 14px; font-weight: 600; padding: 6px 0; min-height: 32px; }
+.hbars.m { grid-template-columns: 92px minmax(0, 1fr) 28px; gap: 8px; }
+.hbars.m .mname { font-weight: 500 !important; color: var(--soft); font-size: 13px; }
+.hbars.m .track { background: var(--s2); }
+.mval { text-align: right; font-size: 13px; } .mval.missed { color: var(--bad); font-weight: 700; }
+
+/* program */
+.progcard h2, .prog h2 { font-size: 22px; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); }
+.facts b { color: var(--text); font-family: var(--display); }
+.row2 { display: flex; gap: 8px; padding-top: 4px; }
+.inline { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 14px; color: var(--soft); padding-top: 4px; }
+.inline select { height: 44px; border-radius: 10px; background: var(--s2); border: 1px solid var(--line2); padding: 0 12px; font-size: 15px; }
+.prog.current { border-color: #3D4A1E; }
+.proghd { display: flex; align-items: flex-start; gap: 8px; }
+.progbody { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; align-items: start; }
+.minimap svg { width: 120px; height: auto; }
+.progbody details summary { cursor: pointer; color: var(--accent); font-weight: 600; font-size: 14px; min-height: 36px; display: flex; align-items: center; }
+.pday { margin-top: 6px; } .pday b { font-size: 13px; }
+.pday ul { margin: 2px 0 0; padding-left: 16px; font-size: 13px; color: var(--soft); }
+.pday small { color: var(--muted); }
+
+/* calendar */
+.calhd { display: flex; align-items: center; justify-content: space-between; }
+.calhd h2 { font-size: 17px; }
+.iconbtn.sm { width: 40px; height: 40px; }
+.iconbtn:disabled { opacity: .3; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.cal-h { text-align: center; font-size: 11px; color: var(--muted); padding: 2px 0; }
+.cal-d { aspect-ratio: 1; min-height: 40px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; font-size: 13px; color: var(--soft); text-decoration: none; position: relative; }
+.cal-d.out { color: #4A505A; }
+.cal-d.today { box-shadow: inset 0 0 0 1.5px var(--text); }
+.cal-d.has { background: var(--t); color: var(--text); box-shadow: inset 0 0 0 1.5px var(--c); }
+.cal-d.has.today { box-shadow: inset 0 0 0 2.5px var(--c); }
+.cal-d i { font-style: normal; font-size: 10px; font-weight: 800; color: var(--c); line-height: 1; }

@@ -464,31 +464,62 @@ export const EXERCISES = [
     cues: [{ text: 'Knees push out over your toes' }, { text: 'Chest up, back flat' }, { text: 'Sit straight down' }],
     mistakes: [{ title: 'Knees caving inward', why: 'Strains the knees. Push them out.' }],
   },
+  {
+    id: 'db-weighted-crunch', name: 'DB Weighted Crunch', day: 'Legs', muscles: 'Abs',
+    setup: 'Lie on your back, knees bent, holding one dumbbell on your chest with both hands.',
+    tempo: '1s up · 2s down',
+    cues: [{ text: 'Curl your ribs toward your hips — lift shoulder blades, not your lower back' }, { text: 'Chin slightly tucked, eyes on the ceiling' }, { text: 'Lower slowly' }],
+    mistakes: [{ title: 'Yanking with your neck', why: 'Strains the neck. Keep the dumbbell on your chest and lead with your ribs.' }],
+  },
+  {
+    id: 'db-side-bend', name: 'DB Side Bend', day: 'Legs', muscles: 'Obliques · Lower back', perSide: true,
+    setup: 'Stand tall with one dumbbell in one hand, the other hand on your hip.',
+    tempo: '2s down · 1s up',
+    cues: [{ text: 'Bend straight sideways — no leaning forward or back' }, { text: 'Use your waist to pull back up' }],
+    mistakes: [{ title: 'Going heavy and fast', why: 'Loads the spine sideways under momentum. Go light and slow.' }],
+  },
 ];
 
 export const byId = Object.fromEntries(EXERCISES.map((e) => [e.id, e]));
 export const DAYS = ['Push', 'Pull', 'Legs'];
 
-export const DEFAULT_PLANS = {
-  Push: [
-    { id: 'db-bench-press', sets: 4, lo: 8, hi: 10 },
-    { id: 'db-incline-press', sets: 3, lo: 10, hi: 12 },
-    { id: 'db-shoulder-press', sets: 3, lo: 8, hi: 10 },
-    { id: 'db-lateral-raise', sets: 3, lo: 12, hi: 15 },
-    { id: 'db-overhead-triceps', sets: 3, lo: 10, hi: 12 },
-  ],
-  Pull: [
-    { id: 'db-one-arm-row', sets: 4, lo: 8, hi: 10 },
-    { id: 'db-chest-row', sets: 3, lo: 10, hi: 12 },
-    { id: 'db-pullover', sets: 3, lo: 12, hi: 12 },
-    { id: 'db-rear-delt-fly', sets: 3, lo: 15, hi: 15 },
-    { id: 'db-hammer-curl', sets: 3, lo: 10, hi: 12 },
-  ],
-  Legs: [
-    { id: 'goblet-squat', sets: 4, lo: 10, hi: 12 },
-    { id: 'db-rdl', sets: 3, lo: 8, hi: 10 },
-    { id: 'bulgarian-split-squat', sets: 3, lo: 10, hi: 10 },
-    { id: 'db-hip-thrust', sets: 3, lo: 12, hi: 12 },
-    { id: 'single-leg-calf-raise', sets: 3, lo: 15, hi: 15 },
-  ],
+// Muscles shown on the coverage map.
+export const MUSCLES = [
+  { id: 'chest', name: 'Chest' }, { id: 'frontDelts', name: 'Front delts' }, { id: 'sideDelts', name: 'Side delts' },
+  { id: 'rearDelts', name: 'Rear delts' }, { id: 'triceps', name: 'Triceps' }, { id: 'biceps', name: 'Biceps' },
+  { id: 'forearms', name: 'Forearms' }, { id: 'lats', name: 'Lats' }, { id: 'upperBack', name: 'Upper back' },
+  { id: 'traps', name: 'Traps' }, { id: 'abs', name: 'Abs' }, { id: 'lowerBack', name: 'Lower back' },
+  { id: 'glutes', name: 'Glutes' }, { id: 'quads', name: 'Quads' }, { id: 'hamstrings', name: 'Hamstrings' }, { id: 'calves', name: 'Calves' },
+];
+
+// Which muscles each exercise trains: p = main target (counts as a full set), s = helps (counts as half a set).
+const WORK = {
+  'db-bench-press': { p: ['chest'], s: ['triceps', 'frontDelts'] },
+  'db-incline-press': { p: ['chest', 'frontDelts'], s: ['triceps'] },
+  'db-shoulder-press': { p: ['frontDelts'], s: ['sideDelts', 'triceps'] },
+  'db-lateral-raise': { p: ['sideDelts'], s: ['traps'] },
+  'db-overhead-triceps': { p: ['triceps'], s: [] },
+  'db-floor-press': { p: ['chest', 'triceps'], s: [] },
+  'db-chest-fly': { p: ['chest'], s: ['frontDelts'] },
+  'db-arnold-press': { p: ['frontDelts', 'sideDelts'], s: ['triceps'] },
+  'db-skull-crusher': { p: ['triceps'], s: [] },
+  'db-one-arm-row': { p: ['lats', 'upperBack'], s: ['biceps', 'rearDelts'] },
+  'db-chest-row': { p: ['upperBack', 'rearDelts'], s: ['lats', 'biceps', 'traps'] },
+  'db-pullover': { p: ['lats'], s: ['chest', 'triceps'] },
+  'db-rear-delt-fly': { p: ['rearDelts'], s: ['upperBack', 'traps'] },
+  'db-hammer-curl': { p: ['biceps', 'forearms'], s: [] },
+  'db-biceps-curl': { p: ['biceps'], s: ['forearms'] },
+  'db-incline-curl': { p: ['biceps'], s: [] },
+  'db-shrug': { p: ['traps'], s: ['forearms'] },
+  'goblet-squat': { p: ['quads', 'glutes'], s: ['abs', 'lowerBack'] },
+  'db-rdl': { p: ['hamstrings', 'glutes'], s: ['lowerBack', 'forearms'] },
+  'bulgarian-split-squat': { p: ['quads', 'glutes'], s: ['hamstrings'] },
+  'db-hip-thrust': { p: ['glutes'], s: ['hamstrings'] },
+  'single-leg-calf-raise': { p: ['calves'], s: [] },
+  'db-walking-lunge': { p: ['quads', 'glutes'], s: ['hamstrings', 'calves'] },
+  'db-step-up': { p: ['quads', 'glutes'], s: [] },
+  'db-sumo-squat': { p: ['glutes', 'quads'], s: ['hamstrings'] },
+  'db-weighted-crunch': { p: ['abs'], s: [] },
+  'db-side-bend': { p: ['abs'], s: ['lowerBack'] },
 };
+for (const e of EXERCISES) e.work = WORK[e.id] || { p: [], s: [] };
