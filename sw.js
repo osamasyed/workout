@@ -1,5 +1,5 @@
 // Offline support: cache the app shell, serve it cache-first, refresh in the background.
-const CACHE = 'ppl-tracker-v1';
+const CACHE = 'ppl-tracker-v2';
 const SHELL = [
   './', './index.html', './css/app.css', './manifest.webmanifest',
   './js/app.js', './js/exercises.js', './js/figure.js', './js/logic.js', './js/store.js', './js/charts.js',

@@ -35,7 +35,7 @@ export const EXERCISES = [
       { text: 'Feet flat on the floor, a little wider than your hips', at: 'toeL', dx: 8, dy: -10 },
       { text: 'Squeeze shoulder blades together and keep your butt on the bench', at: 'pelvis', dx: 0, dy: -16 },
       { text: 'Elbows about 45° from your body, dumbbells over mid-chest', at: 'elbowL', dx: 10, dy: 6 },
-      { text: 'Press until arms are straight over your shoulders — don’t clank the bells', at: 'handL', img: 'end', dx: 12, dy: 0 },
+      { text: 'Press until your arms are nearly straight with the dumbbells over your chest — don’t slam the lockout or clank the bells', at: 'handL', img: 'end', dx: 12, dy: 0 },
       { text: 'Lower for 2 seconds until you feel a stretch across your chest' },
     ],
     mistakes: [
@@ -52,12 +52,12 @@ export const EXERCISES = [
   },
   {
     id: 'db-incline-press', name: 'Incline DB Press', day: 'Push', muscles: 'Upper chest · Front delts · Triceps',
-    setup: 'Set the bench to about 30°. Higher angles turn it into a shoulder press.',
+    setup: 'Set the bench to 30–45°. Steeper than that turns it into a shoulder press.',
     tempo: '1s up · 2s down',
     cues: [
       { text: 'Head, upper back and butt stay on the bench; feet planted', at: 'chest', dx: -4, dy: -18 },
       { text: 'Elbows about 45° from your body, under the dumbbells', at: 'elbowL', dx: 10, dy: 8 },
-      { text: 'Press up and slightly in, over your upper chest', at: 'handL', img: 'end', dx: 12, dy: 0 },
+      { text: 'Press straight up (not toward your feet) until the dumbbells are over your shoulders, arms nearly straight', at: 'handL', img: 'end', dx: 12, dy: 0 },
       { text: 'Lower for 2 seconds to the sides of your upper chest' },
     ],
     mistakes: [
@@ -67,8 +67,8 @@ export const EXERCISES = [
     view: 90,
     figure: {
       props: inclineBench(), path: 'handL',
-      start: { pelvis: [0, 54, 0], pitch: -60, ankles: S(20, 8, 44), knees: S(0.2, 1, 0.6), hands: S(24, 89, -33), elbows: S(1, -1.07, -0.15), grip: 'x' },
-      end: { pelvis: [0, 54, 0], pitch: -60, ankles: S(20, 8, 44), knees: S(0.2, 1, 0.6), hands: S(14, 123, -13), elbows: S(1, -0.3, 0), grip: 'x' },
+      start: { pelvis: [0, 54, 0], pitch: -60, ankles: S(20, 8, 44), knees: S(0.2, 1, 0.6), hands: S(24, 87, -28), elbows: S(1, -1, 0.35), grip: 'x' },
+      end: { pelvis: [0, 54, 0], pitch: -60, ankles: S(20, 8, 44), knees: S(0.2, 1, 0.6), hands: S(15, 129, -38), elbows: S(1, -0.3, 0.2), grip: 'x' },
       mistake: { pelvis: [0, 56, 0], pitch: -60, arch: 7, ankles: S(20, 8, 44), knees: S(0.2, 1, 0.6), hands: S(34, 86, -40), elbows: S(1, 0, 0), grip: 'x', warn: ['arms', 'spine'] },
     },
   },
@@ -102,8 +102,8 @@ export const EXERCISES = [
     cues: [
       { text: 'Shoulders down, away from your ears', at: 'shL', dx: -12, dy: -10 },
       { text: 'Slight bend in the elbows, kept the whole rep', at: 'elbowL', dx: -12, dy: 4 },
-      { text: 'Raise out to the sides, leading with the elbows', at: 'elbowL', img: 'end', dx: 0, dy: -14 },
-      { text: 'Stop at shoulder height', at: 'handL', img: 'end', dx: -6, dy: -14 },
+      { text: 'Raise out to the sides and slightly forward (about 20–30°), leading with the elbows', at: 'elbowL', img: 'end', dx: 0, dy: -14 },
+      { text: 'Stop at or just below shoulder height', at: 'handL', img: 'end', dx: -6, dy: -14 },
     ],
     mistakes: [
       { title: 'Shrugging the weight up', why: 'Shifts work to your traps and can irritate the neck. Keep shoulders down.', at: 'shL', dx: -12, dy: -12 },
@@ -114,7 +114,7 @@ export const EXERCISES = [
     figure: {
       props: [], path: 'handL',
       start: { ...standing, pitch: 4, hands: S(24, 90, 10), elbows: S(0.3, 0, -1), grip: 'z' },
-      end: { ...standing, pitch: 4, hands: S(70, 136, 10), elbows: S(0, 1, -0.3), grip: 'z' },
+      end: { ...standing, pitch: 4, hands: S(66, 136, 25), elbows: S(0, 1, -0.3), grip: 'z' },
       mistake: { ...standing, pitch: -10, shrug: 5, hands: S(58, 160, 8), elbows: S(0, 1, -0.3), grip: 'z', warn: ['shoulders', 'spine', 'arms'] },
     },
   },
@@ -189,7 +189,7 @@ export const EXERCISES = [
       start: { pelvis: [-2, 96, 0], pitch: 78, ankles: { l: [-14, 53, -42], r: [24, 8, -14] }, toes: { l: [-14, 51, -56] }, knees: { l: [0, -1, 0.3], r: [0.3, 0, 1] },
         hands: { l: [-16, 52, 52], r: { hang: 2 } }, elbows: { l: [-1, 0, 0], r: [0.2, 0, -1] }, grip: 'z', bells: ['r'] },
       end: { pelvis: [-2, 96, 0], pitch: 78, ankles: { l: [-14, 53, -42], r: [24, 8, -14] }, toes: { l: [-14, 51, -56] }, knees: { l: [0, -1, 0.3], r: [0.3, 0, 1] },
-        hands: { l: [-16, 52, 52], r: [20, 94, 18] }, elbows: { l: [-1, 0, 0], r: [0.15, 1, -0.6] }, grip: 'z', bells: ['r'] },
+        hands: { l: [-16, 52, 52], r: [20, 93, 4] }, elbows: { l: [-1, 0, 0], r: [0.15, 1, -0.6] }, grip: 'z', bells: ['r'] },
       mistake: { pelvis: [-2, 96, 0], pitch: 72, arch: -9, ankles: { l: [-14, 53, -42], r: [24, 8, -14] }, toes: { l: [-14, 51, -56] }, knees: { l: [0, -1, 0.3], r: [0.3, 0, 1] },
         hands: { l: [-16, 52, 52], r: [28, 98, 38] }, elbows: { l: [-1, 0, 0], r: [1, 0.5, 0] }, grip: 'z', bells: ['r'], warn: ['spine', 'chest', 'armR'] },
     },
@@ -347,7 +347,7 @@ export const EXERCISES = [
     figure: {
       props: [], path: 'pelvis',
       start: { ...standing, pitch: 2, ankles: S(18, 8, 0), knees: S(0.3, 0, 1), hands: T(5, 38, 17), elbows: S(0.4, -1, 0.2), bells: [{ at: { t: [0, 31, 18] }, axis: 'y' }] },
-      end: { pelvis: [0, 52, -16], pitch: 28, ankles: S(18, 8, 0), knees: S(0.5, 0, 1), hands: T(5, 38, 17), elbows: S(0.4, -1, 0.2), bells: [{ at: { t: [0, 31, 18] }, axis: 'y' }] },
+      end: { pelvis: [0, 52, -16], pitch: 28, ankles: S(18, 8, 0), knees: S(0.25, 0, 1), hands: T(5, 38, 17), elbows: S(0.4, -1, 0.2), bells: [{ at: { t: [0, 31, 18] }, axis: 'y' }] },
       mistake: { pelvis: [0, 56, -12], pitch: 50, arch: -6, ankles: S(18, 14, -2), knees: S(-0.9, 0, 0.6), hands: T(5, 34, 17), elbows: S(0.4, -1, 0.2), bells: [{ at: { t: [0, 27, 18] }, axis: 'y' }], warn: ['knees', 'spine', 'feet'] },
     },
   },
@@ -359,7 +359,7 @@ export const EXERCISES = [
       { text: 'Stand tall by squeezing your glutes at the top', at: 'pelvis', dx: -16, dy: -4 },
       { text: 'Soft knees; push your hips straight back', at: 'pelvis', img: 'end', dx: -12, dy: -12 },
       { text: 'Back flat, chest proud', at: 'mid', img: 'end', dx: 0, dy: -18 },
-      { text: 'Dumbbells stay close, sliding down your legs', at: 'handL', img: 'end', dx: 14, dy: 0 },
+      { text: 'Dumbbells stay close, sliding down your legs; stop when you feel a hamstring stretch — usually just below the knees to mid-shin', at: 'handL', img: 'end', dx: 14, dy: 0 },
     ],
     mistakes: [
       { title: 'Rounded back', why: 'The most common way to hurt your lower back. Only go as low as you can stay flat.', at: 'mid', dx: 0, dy: -18 },
@@ -369,7 +369,7 @@ export const EXERCISES = [
     figure: {
       props: [], path: 'handL',
       start: { ...standing, ankles: S(12, 8, 2), hands: SH(-4, -53, 8), elbows: S(0, 0, -1), grip: 'x' },
-      end: { pelvis: [0, 90, -28], pitch: 72, ankles: S(12, 8, 2), knees: S(0, 0, 1), hands: SH(-4, -53, 3), elbows: S(0, 0, -1), grip: 'x' },
+      end: { pelvis: [0, 86, -28], pitch: 60, ankles: S(12, 8, 2), knees: S(0, 0, 1), hands: S(14, 56, 9), elbows: S(0, 0, -1), grip: 'x' },
       mistake: { pelvis: [0, 84, -20], pitch: 64, arch: -11, ankles: S(12, 8, 2), knees: S(0, 0, 1), hands: SH(-4, -48, 18), elbows: S(0, 0, -1), grip: 'x', warn: ['spine', 'arms'] },
     },
   },
@@ -413,9 +413,9 @@ export const EXERCISES = [
     figure: {
       props: [block(-45, 45, 38, 45, -64, -32), rod([-35, 38, -48], [-35, 2, -48]), rod([35, 38, -48], [35, 2, -48])],
       path: 'pelvis',
-      start: { pelvis: [0, 26, -3], pitch: -46, headTilt: -10, ankles: S(16, 8, 40), knees: S(0, 1, 0.4), hands: T(10, 2, 16), elbows: S(1, 0.5, 0), bells: [{ at: { t: [0, 0, 15] }, axis: 'x' }] },
-      end: { pelvis: [0, 60, 11], pitch: -90, headTilt: -30, ankles: S(16, 8, 40), knees: S(0, 1, 0.3), hands: T(10, 2, 16), elbows: S(1, 0.5, 0), bells: [{ at: { t: [0, 0, 15] }, axis: 'x' }] },
-      mistake: { pelvis: [0, 64, 12], pitch: -98, arch: 9, headTilt: 30, ankles: S(16, 8, 46), knees: S(0, 1, 0.3), hands: T(10, 2, 16), elbows: S(1, 0.5, 0), bells: [{ at: { t: [0, 0, 15] }, axis: 'x' }], warn: ['spine', 'head'] },
+      start: { pelvis: [0, 26, -3], pitch: -46, headTilt: -10, ankles: S(18, 8, 56), knees: S(0, 1, 0.4), hands: T(10, 2, 16), elbows: S(1, 0.5, 0), bells: [{ at: { t: [0, 0, 15] }, axis: 'x' }] },
+      end: { pelvis: [0, 60, 11], pitch: -90, headTilt: -30, ankles: S(18, 8, 56), knees: S(0, 1, 0.3), hands: T(10, 2, 16), elbows: S(1, 0.5, 0), bells: [{ at: { t: [0, 0, 15] }, axis: 'x' }] },
+      mistake: { pelvis: [0, 64, 12], pitch: -98, arch: 9, headTilt: 30, ankles: S(18, 8, 62), knees: S(0, 1, 0.3), hands: T(10, 2, 16), elbows: S(1, 0.5, 0), bells: [{ at: { t: [0, 0, 15] }, axis: 'x' }], warn: ['spine', 'head'] },
     },
   },
   {
